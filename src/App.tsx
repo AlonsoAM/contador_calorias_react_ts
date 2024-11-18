@@ -1,7 +1,7 @@
 function App() {
   return (
     <>
-      <h1>Contador de Calorías</h1>
+      <h1 className='text-2xl font-black'>Contador de Calorías</h1>
     </>
   )
 }

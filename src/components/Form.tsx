@@ -52,7 +52,7 @@ const Form = () => {
                 </div>
                 <input type='submit'
                        className='bg-gray-800 hover:bg-gray-900 text-white font-bold py-3 px-4 rounded-lg w-full uppercase cursor-pointer disabled:opacity-10'
-                       value='Guardar Comida o Guardar Ejercicio'
+                       value={activity.category === 1 ? 'Guardar Comida' : 'Guardar Ejercicio'}
                           disabled={!isValidActivity()}
                 />
             </form>

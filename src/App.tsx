@@ -1,35 +1,58 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Form from "./components/Form.tsx";
+import {useReducer, useEffect, useMemo} from "react";
+import {activityReducer, initialState} from "./reducers/activityReducer.ts";
+import ActivityList from "./components/ActivityList.tsx";
+import CalorieTracker from "./components/CalorieTracker.tsx";
+
 
 function App() {
-  const [count, setCount] = useState(0)
 
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    const [state, dispatch] = useReducer(activityReducer, initialState)
+    useEffect(() => {
+        localStorage.setItem('activities', JSON.stringify(state.activities))
+    }, [state.activities]);
+
+    const canRestartApp = useMemo(() => state.activities.length > 0, [state.activities])
+
+    return (
+        <>
+            <header className='bg-lime-600 py-3'>
+                <div className='max-w-4xl mx-auto flex justify-between items-center'>
+                    <h1 className='text-center text-lg font-bold text-white uppercase'>
+                        Contador de Calorías
+                    </h1>
+                    <button
+                        onClick={() => dispatch({type: 'CLEAR_ACTIVE_ACTIVITY'})}
+                        disabled={!canRestartApp}
+                        className='bg-gray-800 hover:bg-gray-900 uppercase font-bold text-white px-3 py-1 rounded-lg cursor-pointer text-xs disabled:opacity-30'
+                    >
+                        Reiniciar App
+                    </button>
+                </div>
+            </header>
+            <section className='bg-lime-500 py-20 px-5'>
+                <div className='max-w-4xl mx-auto'>
+                    <Form dispatch={dispatch} state={state}/>
+                </div>
+            </section>
+
+            <section className='bg-gray-800 py-10'>
+                <div className='max-w-4xl mx-auto'>
+                    <CalorieTracker
+                        activities={state.activities}
+                    />
+                </div>
+            </section>
+
+            <section className='p-10 mx-auto max-w-4xl'>
+                <ActivityList
+                    activities={state.activities}
+                    dispatch={dispatch}
+                />
+            </section>
+
+        </>
+    )
 }
 
 export default App

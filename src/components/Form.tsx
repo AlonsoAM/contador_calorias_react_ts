@@ -1,5 +1,6 @@
 import {categories} from "../data/categories.ts";
 import React, {ChangeEvent, useState} from "react";
+import { v4 as uuidv4 } from 'uuid'
 import {Activity} from "../types";
 import {ActivityActions} from "../reducers/activityReducer.ts";
 
@@ -7,6 +8,7 @@ type FormProps = {
     dispatch: React.Dispatch<ActivityActions>
 }
 const initialState: Activity = {
+    id: uuidv4(),
     category: 1,
     name: '',
     calories: 0
@@ -34,7 +36,10 @@ const Form = ({dispatch}: FormProps) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch({type: 'ADD_ACTIVITY', payload: {newActivity: activity}})
-        setActivity(initialState)
+        setActivity({
+            ...initialState,
+            id: uuidv4()
+        })
     }
 
     return (

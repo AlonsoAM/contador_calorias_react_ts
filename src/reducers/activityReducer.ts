@@ -3,7 +3,8 @@ import {Activity} from "../types";
 export type ActivityActions =
     { type: 'ADD_ACTIVITY', payload: { newActivity: Activity } } |
     { type: 'DELETE_ACTIVITY', payload: { id: Activity['id'] } } |
-    { type: 'SET_ACTIVE_ACTIVITY', payload: { id: Activity['id'] } }
+    { type: 'SET_ACTIVE_ACTIVITY', payload: { id: Activity['id'] } } |
+    { type: 'CLEAR_ACTIVE_ACTIVITY' }
 
 export type ActivityState = {
     activities: Activity[],
@@ -25,7 +26,7 @@ export const activityReducer = (state: ActivityState = initialState, action: Act
         case 'ADD_ACTIVITY':
             let updatedActivities: Activity[] = []
 
-            if (state.activeId){
+            if (state.activeId) {
                 updatedActivities = state.activities.map(activity => activity.id === state.activeId ? action.payload.newActivity : activity)
             } else {
                 updatedActivities = [...state.activities, action.payload.newActivity]
@@ -45,6 +46,11 @@ export const activityReducer = (state: ActivityState = initialState, action: Act
             return {
                 ...state,
                 activeId: action.payload.id
+            }
+        case 'CLEAR_ACTIVE_ACTIVITY':
+            return {
+                activities: [],
+                activeId: ''
             }
         default:
             return state

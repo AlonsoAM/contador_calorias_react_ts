@@ -6,14 +6,15 @@ import {ActivityActions} from "../reducers/activityReducer.ts";
 type FormProps = {
     dispatch: React.Dispatch<ActivityActions>
 }
+const initialState: Activity = {
+    category: 1,
+    name: '',
+    calories: 0
+}
 
 const Form = ({dispatch}: FormProps) => {
 
-    const [activity, setActivity] = useState<Activity>({
-        category: 1,
-        name: '',
-        calories: 0
-    })
+    const [activity, setActivity] = useState<Activity>(initialState)
 
     const handleChangeActivity = (e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
 
@@ -33,6 +34,7 @@ const Form = ({dispatch}: FormProps) => {
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         dispatch({type: 'ADD_ACTIVITY', payload: {newActivity: activity}})
+        setActivity(initialState)
     }
 
     return (

@@ -5,7 +5,7 @@ export type ActivityActions =
     { type: 'DELETE_ACTIVITY', payload: { id: Activity['id'] } } |
     { type: 'SET_ACTIVE_ACTIVITY', payload: { id: Activity['id'] } }
 
-type ActivityState = {
+export type ActivityState = {
     activities: Activity[],
     activeId: Activity['id']
 }

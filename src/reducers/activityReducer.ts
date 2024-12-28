@@ -17,9 +17,18 @@ export const activityReducer = (state: ActivityState = initialState, action: Act
 
     switch (action.type) {
         case 'ADD_ACTIVITY':
+            let updatedActivities: Activity[] = []
+
+            if (state.activeId){
+                updatedActivities = state.activities.map(activity => activity.id === state.activeId ? action.payload.newActivity : activity)
+            } else {
+                updatedActivities = [...state.activities, action.payload.newActivity]
+            }
+
             return {
                 ...state,
-                activities: [...state.activities, action.payload.newActivity]
+                activities: updatedActivities,
+                activeId: ''
             }
         case 'DELETE_ACTIVITY':
             return {
